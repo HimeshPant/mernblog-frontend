@@ -1,7 +1,8 @@
 import axios from 'axios';
 
+// Create an axios instance with the backend URL from the environment variable
 const API = axios.create({
-  baseURL: 'https://mernblog-backend-5k38.onrender.com'
+  baseURL: process.env.REACT_APP_API_URL
 });
 
 export default API;
