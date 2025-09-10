@@ -119,7 +119,7 @@ const AdminPanel = () => {
           <p>{post.content}</p>
           <small>By: {post.author} on {new Date(post.date).toLocaleString()}</small>
           <br />
-          <button style={deleteButtonStyle} onClick={() => handleDelete(post._id)}>Delete</button>
+          <button style={deleteButtonStyle} onClick={() => handleDelete(post._id)}></button>
         </div>
       ))}
     </div>
