@@ -8,7 +8,7 @@ const PostList = () => {
   const dummyPosts = [
     {
       _id: 'dummy1',
-      title: 'Welcome to the Tech Blog!',
+      title: 'Welcome to the Tech Blog!', 
       content: 'Explore various tech articles, tutorials, and tips to boost your skills.',
       author: 'Recruiter',
       createdAt: new Date().toISOString()
