@@ -1,62 +1,96 @@
-
-import React, { useEffect, useState } from "react";
-import API from "../api";
+import React, { useEffect, useState } from 'react';
+import API from './api';
 
 const PostList = () => {
   const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await API.get("/posts");
-        // Sort posts by date (latest first)
-        const sorted = res.data.sort(
-          (a, b) => new Date(b.date) - new Date(a.date)
-        );
-        setPosts(sorted);
-      } catch (err) {
-        console.error("Error fetching posts:", err);
-      }
-    };
+  // Dummy posts shown at the top
+  const dummyPosts = [
+    {
+      _id: 'dummy1',
+      title: 'Welcome to the Tech Blog!',
+      content: 'Explore various tech articles, tutorials, and tips to boost your skills.',
+      author: 'Recruiter',
+      createdAt: new Date().toISOString()
+    },
+    {
+      _id: 'dummy2',
+      title: 'I am Himesh Pant',
+      content: 'I built this project to showcase my skills in React, Node.js, and deploying full-stack applications.',
+      author: 'Recruiter',
+      createdAt: new Date().toISOString()
+    },
+    {
+      _id: 'dummy3',
+      title: 'How I Made This Blog',
+      content: 'This simple tech blog is built using React for the frontend and Node.js with MongoDB for the backend. It’s deployed on Render and Vercel.',
+      author: 'Recruiter',
+      createdAt: new Date().toISOString()
+    }
+  ];
 
-    fetchPosts();
+  useEffect(() => {
+    API.get("/posts")
+      .then(res => {
+        setPosts(res.data);
+      })
+      .catch(err => {
+        console.error("API error:", err);
+      });
   }, []);
 
-  const containerStyle = {
-    maxWidth: "900px",
-    margin: "40px auto",
-    padding: "20px"
-  };
-
+  // Card styling
   const cardStyle = {
-    background: "#f9f9f9",
-    borderRadius: "10px",
-    padding: "20px",
-    marginBottom: "20px",
-    boxShadow: "0 5px 15px rgba(0,0,0,0.1)"
+    backgroundColor: '#fff',
+    borderRadius: '10px',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+    padding: '20px',
+    margin: '15px 0',
+    transition: 'transform 0.2s',
+    cursor: 'pointer'
   };
 
-  const titleStyle = { fontSize: "1.5rem", marginBottom: "10px" };
-  const contentStyle = { fontSize: "1rem", marginBottom: "10px" };
-  const metaStyle = { fontSize: "0.85rem", color: "#555" };
+  const cardHover = {
+    transform: 'scale(1.02)'
+  };
 
   return (
-    <div style={containerStyle}>
-      <h1 style={{ textAlign: "center", marginBottom: "30px" }}>Tech Blog</h1>
-      {posts.length === 0 ? (
-        <p style={{ textAlign: "center" }}>No posts yet!</p>
-      ) : (
-        posts.map((post) => (
-          <div key={post._id} style={cardStyle}>
-            <h2 style={titleStyle}>{post.title}</h2>
-            <p style={contentStyle}>{post.content}</p>
-            <p style={metaStyle}>
-              By <strong>{post.author}</strong> |{" "}
-              {new Date(post.date).toLocaleString()}
-            </p>
-          </div>
-        ))
-      )}
+    <div style={{ maxWidth: '800px', margin: '20px auto', padding: '0 20px', fontFamily: 'Arial, sans-serif' }}>
+      <h1 style={{ textAlign: 'center', color: '#333' }}>Tech Blog</h1>
+
+      {/* Dummy Posts Section */}
+      <h2 style={{ marginTop: '40px', color: '#555' }}>Recommended Posts</h2>
+      {dummyPosts.map(post => (
+        <div
+          key={post._id}
+          style={cardStyle}
+          onMouseEnter={e => Object.assign(e.currentTarget.style, cardHover)}
+          onMouseLeave={e => Object.assign(e.currentTarget.style, { transform: 'scale(1)' })}
+        >
+          <h3 style={{ marginBottom: '10px', color: '#222' }}>{post.title}</h3>
+          <p style={{ color: '#555', lineHeight: '1.5' }}>{post.content}</p>
+          <small style={{ display: 'block', marginTop: '15px', color: '#888' }}>
+            Author: {post.author} | {new Date(post.createdAt).toLocaleDateString()}
+          </small>
+        </div>
+      ))}
+
+      {/* Real Posts Section */}
+      <h2 style={{ marginTop: '40px', color: '#555' }}>Latest Posts</h2>
+      {posts.map(post => (
+        <div
+          key={post._id}
+          style={cardStyle}
+          onMouseEnter={e => Object.assign(e.currentTarget.style, cardHover)}
+          onMouseLeave={e => Object.assign(e.currentTarget.style, { transform: 'scale(1)' })}
+        >
+          <h3 style={{ marginBottom: '10px', color: '#222' }}>{post.title}</h3>
+          <p style={{ color: '#555', lineHeight: '1.5' }}>{post.content}</p>
+          <small style={{ display: 'block', marginTop: '15px', color: '#888' }}>
+            Author: {post.author} | {new Date(post.createdAt).toLocaleDateString()}
+          </small>
+        </div>
+      ))}
     </div>
   );
 };
