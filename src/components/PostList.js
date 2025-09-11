@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import API from "./api"; // Your axios instance
+import API from '../api';
+ // Your axios instance
 
 const PostList = () => {
   const [posts, setPosts] = useState([]);

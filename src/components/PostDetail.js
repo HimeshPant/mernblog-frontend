@@ -43,7 +43,8 @@ const PostDetail = () => {
     <div style={containerStyle}>
       <h1 style={titleStyle}>{post.title}</h1>
       <p style={metaStyle}>
-        By {post.author || "Admin"} on {new Date(post.date).toLocaleDateString()}
+        By {post.author || "Admin"} on on {new Date(post.createdAt).toLocaleDateString()}
+
       </p>
       <p style={contentStyle}>{post.content}</p>
     </div>
