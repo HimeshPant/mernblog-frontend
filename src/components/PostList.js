@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import API from '../api';
- // Your axios instance
 
 const PostList = () => {
   const [posts, setPosts] = useState([]);
+  const [selectedPost, setSelectedPost] = useState(null); // For inline detail view
 
   // Dummy posts at the top
   const dummyPosts = [
@@ -43,16 +43,19 @@ const PostList = () => {
     fetchPosts();
   }, []);
 
-  const openPost = (id) => {
-    window.location.href = `/posts/${id}`; // Opens in new page
+  // Open post inline (no URL change)
+  const openPost = (post) => {
+    setSelectedPost(post);
   };
+
+  const closePost = () => setSelectedPost(null);
 
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>Featured Posts</h2>
       <div style={styles.postGrid}>
         {dummyPosts.map(post => (
-          <div key={post._id} style={styles.postCard} onClick={() => openPost(post._id)}>
+          <div key={post._id} style={styles.postCard} onClick={() => openPost(post)}>
             <h3 style={styles.title}>{post.title}</h3>
             <p style={styles.content}>{post.content}</p>
             <small style={styles.author}>By {post.author}</small>
@@ -63,13 +66,24 @@ const PostList = () => {
       <h2 style={styles.heading}>Latest Posts</h2>
       <div style={styles.postGrid}>
         {posts.map(post => (
-          <div key={post._id} style={styles.postCard} onClick={() => openPost(post._id)}>
+          <div key={post._id} style={styles.postCard} onClick={() => openPost(post)}>
             <h3 style={styles.title}>{post.title}</h3>
             <p style={styles.content}>{post.content}</p>
             <small style={styles.author}>By {post.author}</small>
           </div>
         ))}
       </div>
+
+      {selectedPost && (
+        <div style={styles.modal}>
+          <div style={styles.modalContent}>
+            <h2>{selectedPost.title}</h2>
+            <p>{selectedPost.content}</p>
+            <small>By {selectedPost.author}</small>
+            <button style={styles.closeButton} onClick={closePost}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -113,6 +127,33 @@ const styles = {
   author: {
     fontSize: "12px",
     color: "#888"
+  },
+  modal: {
+    position: "fixed",
+    top: 0, left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    padding: "30px",
+    borderRadius: "10px",
+    maxWidth: "600px",
+    width: "90%"
+  },
+  closeButton: {
+    marginTop: "20px",
+    padding: "10px 20px",
+    border: "none",
+    borderRadius: "5px",
+    backgroundColor: "#333",
+    color: "#fff",
+    cursor: "pointer"
   }
 };
 
